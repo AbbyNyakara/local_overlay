@@ -42,22 +42,28 @@ _EOF_
 }
 
 
-case "$1" in
-    --install)
-        ./local_build
-        ./local_install_conda
-        ;;
-    --activate)
-        ./local_start
-        ;;
-    --deactivate)
-        # script to deactivate the env
-        ;;
-    --help)
-        help
-        ;;
-    *)
-        echo "Overlay error: Invalid argument: Try overlay --help for more information." >&2
-        exit 1
-        ;;
-esac
+# Create the commands
+if [ "$1" == "--install"]; then
+./local_build
+./local_install_conda
+fi
+
+if [ "$1" == "--activate"]; then
+./local_start
+fi
+
+if ["$1" == "--deactivate"]; then
+ # script to deactivate the env
+fi
+
+if [ "$1" == "--help"]; then
+help
+exit 1
+fi
+
+if [ -n "$1"]; then
+echo "Overlay error: Invalid argument: Try overlay --help for more information" >&2
+exit 1
+fi
+
+

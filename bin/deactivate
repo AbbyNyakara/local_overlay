@@ -1,0 +1,7 @@
+cd /mnt/local/abigaelmogusu 
+rm abigaelmogusu.tgz 
+echo "saving using parallel pigz"
+tar c- ./abigaelmogusu | pigz > abigaelmogusu.tgz 
+mv /mnt/local/abigaelmogusu/abigaelmogusu.tgz /Users/abigaelmogusu/Documents/MSU/ICER/local_overlay 
+cd /Users/abigaelmogusu/Documents/MSU/ICER/local_overlay 
+rm -rf /mnt/local/abigaelmogusu/abigaelmogusu
