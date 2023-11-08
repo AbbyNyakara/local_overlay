@@ -1,0 +1,6 @@
+#!/bin/bash
+
+#bash --rcfile <(echo '. ~/.bashrc; source local_start_src')
+source local_start_src
+#cd /mnt/local/$USER/$USER
+

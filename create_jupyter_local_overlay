@@ -1,0 +1,42 @@
+#!/bin/bash
+# Written by Dirk Colbry, 09-25-22
+#DESCRIPTION Create a singularity Overlay that will work with the new Jupyter OnDemand (Beta users only)
+#LABEL singularity 
+#
+# NOTE Using Singularity in Jupyter OnDemand is in development and not avaliable to most HPCC users. 
+# Please submit a ticket if you would like beta access: http://contact.icer.msu.edu/ 
+#
+# Usage:
+#   create_jupyter_singularity_overlay [overlay_filename (default overlay)] 
+
+filename=$1
+url=$2
+image=$3
+
+
+
+if [ -z $1 ] 
+then
+	filename=$USER
+fi
+if [ -z $2 ]
+then
+        image=/mnt/local/$USER
+fi
+
+set +x
+
+echo "Building new overlay image"
+./local_build $filename
+echo "DONE Building overlay image"
+
+echo "Installing miniconda"
+./local_install_mamba $filename
+echo "DONE installing Conda"
+
+echo "Installing jupyter and jupyterlab"
+source ./local_start_src
+conda install -y -c conda-forge -c anaconda jupyter jupyterlab
+
+echo "Creation of ${filename} successfull!:"
+source ./bin/deactivate

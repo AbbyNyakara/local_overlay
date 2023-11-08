@@ -1,0 +1,60 @@
+#!/bin/bash
+
+# Import scripts
+. ./local_build 
+. ./local_install_conda 
+. ./local_install_mamba 
+. ./local_start 
+
+set -e
+
+# Check for arguments
+if [ "$#" -lt 1 ]; then
+    echo "Overlay error: Missing argument. Try overlay --help for more information." >&2
+    exit 1
+fi
+
+# Define variables
+
+command="$1"
+name="$2"
+project_name="$3"
+
+# Functions: 
+
+help(){
+cat << _EOF_
+    Please refer to the overlay tool documentation for more information 
+
+    Some helpful commands: 
+
+    --help: Shows this help page and exits
+    --create: creates an overlay virtual environment
+    --activate:
+    --deactivate: Deactivates the virtual environment and deletes it from the system
+
+_EOF_
+}
+
+# Process commands
+
+case "$command" in
+    --install)
+        ./local_build
+        ./local_install_conda
+        ;;
+    --activate)
+        ./local_start
+        ;;
+    --deactivate)
+        # script to deactivate the env
+        ;;
+    --help)
+        help
+        ;;
+    *)
+        echo "Overlay error: Invalid argument: Try overlay --help for more information." >&2
+        exit 1
+        ;;
+esac
+

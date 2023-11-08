@@ -1,0 +1,37 @@
+#!/bin/bash
+# Written by Dirk Colbry, 08-12-22
+#DESCRIPTION Install Conda insside an overlay image 
+#LABEL singularity 
+#
+# Usage:
+#   overlay_install_conda [overlay_filename (default overlay)] 
+
+filename=$1
+url=$2
+image=$3
+
+if [ -z $1 ] 
+then
+	filename=$USER
+fi
+
+if [ -z $2 ]
+then
+	url=https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+fi
+
+if [ -z $3 ]
+then
+        image=/mnt/local/$USER
+fi
+
+source ./local_start $filename
+
+minicondafile=Miniconda3-installer.sh
+
+wget -O $minicondafile $url
+chmod 755 $minicondafile
+
+./${minicondafile}  -b -p ./miniconda3/
+rm $minicondafile
+ 

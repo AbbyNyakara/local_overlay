@@ -1,0 +1,47 @@
+#!/bin/bash
+# Written by Dirk Colbry, 08-03-22
+#DESCRIPTION Build a ulocal directoy  file to make some of singularity read/write 
+#LABEL singularity 
+#
+# Use this command to build a virtual "disk drive" that can be used with a singularity image.  
+# Once this file is made you should be able to run it using the 'start_overlay' command.
+#
+# A good starting point would be to use the default options and then just run each command:
+#
+#   overlay_build    
+#   overlay_start
+#    
+#
+# Usage:
+#   overlay_build [size in gb (default 5)] [overlay_file_image (default overlay.img)]] 
+
+name=$1
+currdir=`pwd`
+if [ -z $name ]
+then
+	name=$USER
+fi
+
+folder=/mnt/local/$USER
+
+echo "Building ${name}.tgz at ${folder} local"
+
+mkdir -p $folder/${name}/bin 
+
+cd $folder/${name}
+cat << EOF > ./bin/deactivate 
+cd $folder 
+rm ${name}.tgz 
+echo "saving using parallel pigz"
+tar c- ./${name} | pigz > ${name}.tgz 
+mv $folder/${name}.tgz $currdir 
+cd $currdir 
+rm -rf $folder/${name}
+EOF
+
+source ./bin/deactivate
+
+echo "${name}.tgz created. To activate type source local_start"
+
+
+

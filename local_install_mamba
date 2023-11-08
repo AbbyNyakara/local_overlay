@@ -1,0 +1,27 @@
+#!/bin/bash
+# Written by Dirk Colbry, 08-12-22
+#DESCRIPTION Install Conda insside an overlay image 
+#LABEL singularity 
+#
+# Usage:
+#   overlay_install_conda [overlay_filename (default overlay)] 
+
+filename=$1
+url=$2
+image=$3
+
+if [ -z $1 ] 
+then
+	filename=$USER
+fi
+
+if [ -z $3 ]
+then
+        image=/mnt/local/$USER
+fi
+
+source ./local_start_src $filename
+mkdir -p bin
+curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj bin/micromamba
+cd bin
+ln -s micromamba conda 

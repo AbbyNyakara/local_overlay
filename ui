@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# Import scripts
+. ./local_build 
+. ./local_install_conda 
+. ./local_install_mamba 
+. ./local_start 
+
+set -e
+
+# Arguments: 
+$0 = overlay
+$1 = command
+$2 = project_name
+
+# Functions: 
+
+help(){
+cat << _EOF_
+    Overlay Tool Documentation
+
+    Usage: overlay [command] [name] [project_name]
+
+    Commands:
+    --help          Show this help message
+    --create        Create an overlay virtual environment
+    --activate      Activate an overlay environment
+    --deactivate    Deactivate and zip the overlay environment
+
+    Arguments:
+    command         The command to be executed (required)
+    name            The name of the overlay environment (default: "myenv")
+    project_name    The name of the project associated with the environment (default: "myproject")
+
+    Examples:
+    overlay --create myenv myproject    # Create a virtual environment named "myenv" for project "myproject"
+    overlay --activate myenv           # Activate the "myenv" environment
+    overlay --deactivate               # Deactivate and zip the current environment
+
+    Please refer to the overlay tool documentation for more information.
+_EOF_
+}
+
+
+case "$1" in
+    --install)
+        ./local_build
+        ./local_install_conda
+        ;;
+    --activate)
+        ./local_start
+        ;;
+    --deactivate)
+        # script to deactivate the env
+        ;;
+    --help)
+        help
+        ;;
+    *)
+        echo "Overlay error: Invalid argument: Try overlay --help for more information." >&2
+        exit 1
+        ;;
+esac
