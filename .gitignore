@@ -1,1 +1,4 @@
 *.tgz
+micromamba
+miniconda3
+bin
